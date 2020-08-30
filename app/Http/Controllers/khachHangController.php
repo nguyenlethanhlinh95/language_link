@@ -2,45 +2,67 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Student;
+use App\Services\BranchService;
+use App\Services\StudentService;
 use Carbon\Carbon;
 use Facade\Ignition\QueryRecorder\Query;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\View\View;
 use Symfony\Component\VarDumper\Caster\RedisCaster;
 
 class khachHangController extends Controller
 {
+    /**
+     * @var $studentService
+     * @var $branchService
+     */
+    protected $studentService;
+    protected $branchService;
+
+    /**
+     * @param StudentService       $studentService       StudentService
+     * @param BranchService       $branchService       BranchService
+     */
+    public function __construct(StudentService $studentService, BranchService $branchService)
+    {
+        $this->studentService = $studentService;
+        $this->branchService = $branchService;
+    }
+
+    /**
+     * Show list Student
+     *
+     * @return View
+     */
     public function getHocVien(Request $request)
     {
-        $quyen = new quyenController();
-        $quyenXemKH = $quyen->getXemKhachHang();
-        if ($quyenXemKH == 1) {
-            $lay = $quyen->layDuLieu();
-            $hocVienTong = DB::table('st_student')
-               
-                ->orderByDesc('student_dateTime')
-                ->select('student_id')
-                ->get();
-            $hocVien = DB::table('st_student')
-                ->orderBy('student_lastName')
-                ->orderByDesc('student_dateTime')
-                ->take($lay)
-                ->skip(0)
-                ->get();
-            $soHocVien = count($hocVienTong);
-            $soTrang = (int) $soHocVien / $lay;
-            if ($soHocVien % $lay > 0)
-                $soTrang++;
-
-
-            return view('KhachHang.khachHang')
-                ->with('hocVien', $hocVien)
-                ->with('soTrang', $soTrang)
-                ->with('page', 1);
-        } else
+        try {
+            $quyen = new quyenController();
+            $quyenXemKH = $quyen->getXemKhachHang();
+            if ($quyenXemKH == 1) {
+                $lay = $quyen->layDuLieu();
+                $hocVien = $this->studentService->getTakeStudent($lay);
+                $soHocVien = $this->studentService->getTotalStudent();
+                $soTrang = (int) $soHocVien / $lay;
+                if ($soHocVien % $lay > 0)
+                    $soTrang++;
+                $data = [
+                    'hocVien' => $hocVien,
+                    'soTrang' => $soTrang,
+                    'page' => 1,
+                    'branchName' => $this->branchService->getBranchNameFromUserLogin()
+                ];
+                return view('KhachHang.khachHang', $data);
+            } else
+                return redirect()->back();
+        } catch (\Exception $exception)
+        {
             return redirect()->back();
+        }
     }
 
     public function getThemHocVien()
@@ -121,16 +143,16 @@ class khachHangController extends Controller
                 $link = $request->get('link');
                 $trangThai = $request->get('trangThai');
                 if($nickname=="")
-                $nickname="";
+                    $nickname="";
                 if($email=="")
-                $email="";
+                    $email="";
 
                 if($sdtPH=="")
-                $sdtPH = "";
+                    $sdtPH = "";
                 if($tenPH=="")
-                $tenPH = "";
+                    $tenPH = "";
                 if($sdt=="")
-                $sdt = "";
+                    $sdt = "";
 
                 $now = Carbon::now('Asia/Ho_Chi_Minh');
                 $tenKoDau = $this->convert_vi_to_en($ten);
@@ -213,7 +235,7 @@ class khachHangController extends Controller
             $quyen = new quyenController();
             $quyenSuaKH = $quyen->getSuaKhachHang();
             if ($quyenSuaKH == 1) {
-               
+
                 $id = $request->get('id');
                 $ho = $request->get('firtName');
                 $ten = $request->get('lastName');
@@ -227,16 +249,16 @@ class khachHangController extends Controller
                 $trangThai = $request->get('trangThai');
                 $nickname = $request->get('nickname');
                 if($nickname=="")
-                $nickname="";
+                    $nickname="";
                 if($email=="")
-                $email="";
+                    $email="";
 
                 if($sdtPH=="")
-                $sdtPH = "";
+                    $sdtPH = "";
                 if($tenPH=="")
-                $tenPH = "";
+                    $tenPH = "";
                 if($sdt=="")
-                $sdt = "";
+                    $sdt = "";
                 $tenKoDau = $this->convert_vi_to_en($ten);
                 if ($sdt != "" || $sdtPH != "") {
                     $profileImage = "";
@@ -325,69 +347,24 @@ class khachHangController extends Controller
                 return response(2);
         }
     }
-    
+
     public function searchHocVien(Request $request)
     {
-        if ($request->ajax()) {
+        try {
+            $params = $request->all();
             $quyen = new quyenController();
-            $lay = $quyen->layDuLieu();
-            $value = $request->get('value');
-            $page = $request->get('page');
-            if ($value == "")
-                $marketing = DB::table('st_student')
-                ->orderBy('student_lastName')
-                    ->take($lay)
-                    ->orderByDesc('student_dateTime')
-                    ->skip(($page - 1) * $lay)
-                    ->get();
-            else
-                $marketing = DB::table('st_student')
-                ->orderBy('student_lastName')
-                    ->where('student_firstName', 'like', '%' . $value . '%')
-                    ->orwhere('student_lastName', 'like', '%' . $value . '%')
-                    ->orwhere('student_lastNameHidden', 'like', '%' . $value . '%')
-                    ->orwhere('student_nickName', 'like', '%' . $value . '%')
-                    ->orwhere('student_phone', 'like', '%' . $value . '%')
-                    ->orwhere('student_parentPhone', 'like', '%' . $value . '%')
-                    ->take($lay)
-                    ->orderByDesc('student_dateTime')
-                    ->skip(($page - 1) * $lay)
-                    ->get();
-                    
-            $out = "";
-            $i = 1;
-            foreach ($marketing as $item) {
-
-                $out .= '<tr>
-                <td>' . $i . '</td>
-                <td><a href=\'' . route('getChiTietHocVien') . '?id=' . $item->student_id . '\'>' . $item->student_firstName . ' ' . $item->student_lastName . '</a></td>
-                <td>' . $item->student_nickName . '</td>
-                <td>' . date('d/m/Y', strtotime($item->student_birthDay)) . '</td>
-                <td>' . $item->student_parentName . '</td>';
-                $out .=  '<td>' . $item->student_parentPhone . '</td>';
-               $out .=  '<td>' . $item->student_phone . '</td>';
-              
-            
-               $out .=  '<td>' . $item->student_address . '</td>';
-                if (session('quyen23')==1)
-                    $out .= '<td>
-                                <a class="btn" href=\'' . route('getCapNhatHocVien') . '?id=' . $item->student_id . '\'>
-                                    <i style="color: blue" class="fa fa-edit"></i>
-                                </a>
-                            </td>';
-
-                if (session('quyen24')==1)
-                    $out .= '<td>
-                                <a class="btn" onclick="xoa(\'' . $item->student_id . '\');">
-                                    <i style="color: red" class="fa fa-close"></i>
-                                </a>
-                            </td>';
-
-                $out .= ' </tr>';
-                $i++;
-            }
-            return response($out);
+            $students = $this->studentService->searchStudentView($params);
+            $data = [
+                'hocVien' => $students,
+                'branchName' => $this->branchService->getBranchNameFromUserLogin(),
+                'keyword' => $params['search_by_name']
+            ];
+            return view('KhachHang.search_student_by_result', $data);
+        } catch (\Exception $exception)
+        {
+            abort(404);
         }
+
     }
     public function getThongTinGhiDanh(Request $request)
     {
@@ -506,41 +483,41 @@ class khachHangController extends Controller
                 ->orderByDesc('placementTest_dateTime')
                 ->get();
             $chiNhanh = DB::table('st_branch')
-            ->where('branch_id',$hocVien->branch_id)
-            ->get()->first();
+                ->where('branch_id',$hocVien->branch_id)
+                ->get()->first();
             $maHocVien="";
             if(isset($chiNhanh))
             {
                 $maHocVien=$chiNhanh->branch_code."_".$hocVien->student_id;
             }
 
-              $khoaHoc = DB::table('st_course')
-              ->join('st_receipt_detail','st_receipt_detail.course_id','=',
-              'st_course.course_id')  
-              ->join('st_receipt','st_receipt.receipt_id','=',
-              'st_receipt_detail.receipt_id')
-              ->join('st_branch','st_branch.branch_id','=','st_receipt.branch_id')
-              ->join('st_study_program','st_study_program.studyProgram_id','=',
-              'st_course.studyProgram_id')
-              ->where('st_receipt.student_id',$id)
-              ->get();
+            $khoaHoc = DB::table('st_course')
+                ->join('st_receipt_detail','st_receipt_detail.course_id','=',
+                    'st_course.course_id')
+                ->join('st_receipt','st_receipt.receipt_id','=',
+                    'st_receipt_detail.receipt_id')
+                ->join('st_branch','st_branch.branch_id','=','st_receipt.branch_id')
+                ->join('st_study_program','st_study_program.studyProgram_id','=',
+                    'st_course.studyProgram_id')
+                ->where('st_receipt.student_id',$id)
+                ->get();
 
-              $now = Carbon::now('Asia/Ho_Chi_Minh');
-              $arrKhoahoc=[];
-              foreach($khoaHoc as $item)
-              {
-                  if($item->class_id>0)
-                  {
-                      $lopHoc = DB::table('view_class')
-                      ->where('class_id',$item->class_id)
-                      ->get()->first();
-  
-                      if(isset($lopHoc))
-                      {
-                        $chiNhanh = DB::table('st_branch')
-                        ->where('branch_id',$item->branch_id)
+            $now = Carbon::now('Asia/Ho_Chi_Minh');
+            $arrKhoahoc=[];
+            foreach($khoaHoc as $item)
+            {
+                if($item->class_id>0)
+                {
+                    $lopHoc = DB::table('view_class')
+                        ->where('class_id',$item->class_id)
                         ->get()->first();
-        
+
+                    if(isset($lopHoc))
+                    {
+                        $chiNhanh = DB::table('st_branch')
+                            ->where('branch_id',$item->branch_id)
+                            ->get()->first();
+
                         if(isset($chiNhanh))
                         {
                             $maChiNhanh = $chiNhanh->branch_code;
@@ -553,9 +530,9 @@ class khachHangController extends Controller
 
                         $ngayBatDau = date('d/m/Y',strtotime($lopHoc->class_startDay)) ;
                         $ngayKetThuc = date('d/m/Y',strtotime($lopHoc->class_endDay)) ;
-                        
+
                         if($lopHoc->class_status==0)
-                        $trangThai = "Canceled";
+                            $trangThai = "Canceled";
                         else
                         {
                             if($now < $lopHoc->class_startDay)
@@ -565,33 +542,33 @@ class khachHangController extends Controller
                             else
                                 $trangThai="Finished";
                         }
-                      }
-                      else
-                      {
-                          $tenKhoaHoc=$item->branch_id."_".$item->studyProgram_code."_".$item->course_name;
-                          $ngayBatDau = "" ;
-                          $ngayKetThuc ="";
-                         
-                          $trangThai = "Waiting";
-                      }
-                      
-                  }
-                  else
-                  {
-                     $tenKhoaHoc=$item->branch_code."_".$item->studyProgram_code."_".$item->course_name;
-                     $ngayBatDau = "" ;
-                     $ngayKetThuc ="";
-                     $trangThai = "Waiting";
-                  }
-                  $hocPhi= "Đã đóng";
-                  $arrKhoahoc[]=[
-                      'tenKhoaHoc'=>$tenKhoaHoc,
-                      'ngayBatDau'=>$ngayBatDau,
-                      'ngayKetThuc'=>$ngayKetThuc,
-                      'trangThai'=>$trangThai,
-                      'hocPhi'=>$hocPhi
-                  ];
-              }
+                    }
+                    else
+                    {
+                        $tenKhoaHoc=$item->branch_id."_".$item->studyProgram_code."_".$item->course_name;
+                        $ngayBatDau = "" ;
+                        $ngayKetThuc ="";
+
+                        $trangThai = "Waiting";
+                    }
+
+                }
+                else
+                {
+                    $tenKhoaHoc=$item->branch_code."_".$item->studyProgram_code."_".$item->course_name;
+                    $ngayBatDau = "" ;
+                    $ngayKetThuc ="";
+                    $trangThai = "Waiting";
+                }
+                $hocPhi= "Đã đóng";
+                $arrKhoahoc[]=[
+                    'tenKhoaHoc'=>$tenKhoaHoc,
+                    'ngayBatDau'=>$ngayBatDau,
+                    'ngayKetThuc'=>$ngayKetThuc,
+                    'trangThai'=>$trangThai,
+                    'hocPhi'=>$hocPhi
+                ];
+            }
 
             return view('KhachHang.chiTietKhachHang')
                 ->with('hocVien', $hocVien)

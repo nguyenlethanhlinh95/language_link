@@ -1,11 +1,35 @@
 @extends('master.masterAdmin')
+@push('styles')
+    <style>
+        .card-body nav {
+            display: flex;
+            flex-direction: row-reverse;
+            margin-right: 30px;
+        }
+        .input-group-text i {
+            font-size: 24px;
+        }
+        .input-group-prepend {
+            margin-left: 26px;
+        }
+        .input-group-prepend:hover {
+            cursor: pointer;
+        }
+        .submit {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .submit:focus {
+            outline: none;
+        }
+    </style>
+@endpush
 @section('title')
     HỌC VIÊN<Nav></Nav>
 @endsection
 @section('contain')
 <div class="content-body">
-
-    
     <!-- row -->
     <div class="container-fluid">
         <div class="row">
@@ -13,24 +37,29 @@
             <div class="card">
 
 <div class="card-body">
-    <h4 class="card-title">Học viên</h4>
+    <h4 class="card-title">Học viên | @if (isAdmin()) Tất cả chi nhánh @else Chi nhánh {{ $branchName }} @endif</h4>
     <br>
     <div class="row">
-        <div class="col-lg-3 col-sm-6">
-            <div class="input-group icons">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+        <div class="col-lg-6 col-sm-12">
+            <form action="{{ route('searchHocVien') }}" method="get">
+                @csrf
+                <div class="input-group icons">
+                    <div class="input-group-prepend">
+                        <button class="submit" type="submit" title="Tìm kiếm">
+                            <span class="input-group-text h5 p-0 bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i
+                                        class="mdi mdi-magnify"></i></span>
+                        </button>
+                    </div>
+                    <input name="search_by_name" id="search_by_name" type="search" class="form-control"
+                           placeholder="Tìm theo tên học viên" aria-label="Tìm marketing">
                 </div>
-                <input id="valueSearch" onkeyup="search();" type="search" class="form-control" placeholder="Search tên học viên" aria-label="Tìm marketing">
-            </div>
-        </div>
-        <div class="col-lg-6 col-sm-6">
+            </form>
         </div>
 
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-6 col-sm-12 text-right">
             @if(session('quyen22')==1)
             <a href="{{route('getThemHocVien')}}">
-            <button  type="button" class="btn mb-1 btn-outline-success" style="float: right">Thêm mới</button>
+            <button type="button" class="btn mb-1 mr-0 mr-md-4 btn-outline-success">Thêm mới</button>
             </a>
             @endif
 
@@ -91,44 +120,8 @@
             @endforeach
         </tbody>
     </table>
-    <div class="bootstrap-pagination">
-        <nav>
-            <ul class="pagination justify-content-end">
-                @if($page==1)
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-
-                </li>
-                @else <li class="page-item ">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-
-                </li>
-                @endif
-                @for($i=1;$i<=$soTrang;$i++) 
-                @if($i==$page) 
-                    <li id="page{{$i}}" class="page-item active">
-                        <a onclick="searchPage('{{$i}}')" class="page-link" >{{$i}}</a>
-                    </li>
-                    @else
-                    <li id="page{{$i}}" class="page-item">
-                        <a onclick="searchPage('{{$i}}')" class="page-link">{{$i}}</a>
-                    </li>
-                    @endif
-                    @endfor
-
-                    @if($page==1)
-                    <li class="page-item disabled">
-                        <a class="page-link">Next</a>
-                    </li>
-                    @else 
-                    <li class="page-item">
-                        <a class="page-link" >Next</a>
-                    </li>
-                    @endif
-            </ul>
-        </nav>
-    </div>
-    <input hidden id="pageSelect" value="1">
+    {!! $hocVien->links(); !!}
+    {{--<input hidden id="pageSelect" value="1">--}}
 </div>
 </div>
             </div>
@@ -138,27 +131,38 @@
 
 <script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
 <script>
-     function search() {
-        
-        $pageSelect = $('#pageSelect').val();
-        document.getElementById('page'+$pageSelect).className="page-item";
+    $('#valueSearch').keyup(search(function (e) {
+        console.log('Time elapsed!', this.value);
+    }, 500));
+     function search(callback, ms) {
+         var timer = 0;
+         return function () {
+             var context = this, args = arguments;
+             clearTimeout(timer);
+             timer = setTimeout(function () {
+                 callback.apply(context, args);
+             }, ms || 0);
 
-        document.getElementById('page1').className="page-item active";
-        $('#pageSelect').val(1);
+             $pageSelect = $('#pageSelect').val();
+             document.getElementById('page'+$pageSelect).className="page-item";
 
-        $value = $('#valueSearch').val();
-        $.ajax({
-            type: 'get',
-            url: '{{ route("searchHocVien")}}',
-            data: {
-                'value': $value,
-                'page': 1
-            },
-            success: function(data) {
-                document.getElementById('duLieuSearch').innerHTML = data;
+             document.getElementById('page1').className="page-item active";
+             $('#pageSelect').val(1);
 
-            }
-        });
+             $value = $('#valueSearch').val();
+             $.ajax({
+                 type: 'get',
+                 url: '{{ route("searchHocVien")}}',
+                 data: {
+                     'value': $value,
+                     'page': 1
+                 },
+                 success: function(data) { console.log(data);
+                     document.getElementById('duLieuSearch').innerHTML = data;
+
+                 }
+             });
+         }
     }
     function searchPage(page) {
         $pageSelect = $('#pageSelect').val();
@@ -176,7 +180,7 @@
             },
             success: function(data) {
                 document.getElementById('duLieuSearch').innerHTML = data;
-
+                console.log(data);
             }
         });
     }

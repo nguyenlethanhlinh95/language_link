@@ -46,6 +46,8 @@
     <script src="./plugins/tables/js/jquery.dataTables.min.js"></script>
     <script src="./plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
     <script src="./plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+    @stack('scripts')
+
     <script>
        
         function thongBaoTruocGio()
@@ -205,4 +207,5 @@
             hideMethod:"fadeOut",tapToDismiss:!1})}
 
     </script>
+
 </html>
