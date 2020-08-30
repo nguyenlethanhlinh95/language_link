@@ -12,6 +12,7 @@ class chiNhanhController extends Controller
 {
     public function getChiNhanh(Request $request)
     {
+        $user = getUserLogin();
         $quyen = new quyenController();
         $quyenXem = $quyen->getXemChiNhanh();
         if ($quyenXem== 1) {
