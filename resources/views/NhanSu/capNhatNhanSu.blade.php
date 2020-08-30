@@ -63,12 +63,17 @@ nhân sự
                                     <label>Chi nhánh <span style="color: red">*</span></label>
                                     <select class="form-control" name="chiNhanh" required>
                                         @foreach($chiNhanh as $item)
-                                        @if($item->branch_id == $nhanVien->branch_id)
-                                           <option selected value="{{$item->branch_id}}">{{$item->branch_name}}</option>
-                                        @else
-                                        <option value="{{$item->branch_id}}">{{$item->branch_name}}</option>
-                                       
-                                        @endif
+                                            @if (isAdmin())
+                                                @if($item->branch_id == $nhanVien->branch_id)
+                                                    <option disabled selected value="{{$item->branch_id}}">{{$item->branch_name}}</option>
+                                                @else
+                                                    <option value="{{$item->branch_id}}">{{$item->branch_name}}</option>
+                                                @endif
+                                            @else
+                                                @if($item->branch_id == $nhanVien->branch_id)
+                                                    <option disabled selected value="{{$item->branch_id}}">{{$item->branch_name}}</option>
+                                                @endif
+                                            @endif
                                            @endforeach
                                            
                                        </select>

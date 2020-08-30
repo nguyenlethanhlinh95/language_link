@@ -60,13 +60,22 @@ nhân sự
                                 </div>
                                 <div class="col-lg-6 col-sm-6">
                                     <label>Chi nhánh <span style="color: red">*</span></label>
-                                    <select class="form-control" name="chiNhanh" required>
-                                        @foreach($chiNhanh as $item)
-                                           <option value="{{$item->branch_id}}">{{$item->branch_name}}</option>
-                                       @endforeach
-                                           
-                                       </select>
-                                    </div>
+                                    @if(isAdmin())
+                                        <select class="form-control" name="chiNhanh" required>
+                                            @foreach($chiNhanh as $item)
+                                                <option value="{{$item->branch_id}}">{{$item->branch_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <select class="form-control" name="chiNhanh" required>
+                                            @foreach($chiNhanh as $item)
+                                                @if ( $user['branch_id'] == $item->branch_id)
+                                                    <option selected disabled="true" value="{{$item->branch_id}}">{{$item->branch_name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                 </div>
                                     <div class="col-lg-6 col-sm-6">
                                         <label>Phòng Ban <span style="color: red">*</span></label>
                                         <select class="form-control" name="phongBan" required>

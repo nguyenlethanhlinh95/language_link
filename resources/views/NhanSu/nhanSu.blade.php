@@ -15,15 +15,17 @@ nhân viên
                         <h4 class="card-title">Nhân viên </h4>
                         <br>
                         <div class="row">
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-sm-12">
                             </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <label>Chi nhánh</label>
+                            <div class="col-lg-3 col-sm-12">
+                                @if (isAdmin())
+                                    <label>Chi nhánh</label>
+                                @endif
                             </div>
-                            <div class="col-lg-6 col-sm-6">
+                            <div class="col-lg-6 col-sm-12">
                             </div>
                            
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-sm-12">
                                 <div class="input-group icons">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
@@ -32,19 +34,20 @@ nhân viên
                                     placeholder="Search tên nhân viên" aria-label="Tìm marketing">
                                 </div>
                             </div>
-                            <div class="col-lg-3 col-sm-6">
-                                
-                                <select class="form-control" name="chiNhanh" id="chiNhanh" onchange="search();">
-                                   <option value="0">Tất cả</option>
-                                    @foreach($chiNhanh as $item)
-                                    <option value="{{ $item->branch_id }}">{{ $item->branch_name }}</option>
-                                    @endforeach
-                                </select>
-                            
+                            @if (isAdmin())
+                                <div class="col-lg-3 col-sm-12">
+                                    <select class="form-control" name="chiNhanh" id="chiNhanh" onchange="search();">
+                                       <option value="0">Tất cả</option>
+                                        @foreach($chiNhanh as $item)
+                                        <option value="{{ $item->branch_id }}">{{ $item->branch_name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
+                            @endif
+                            <div class="col-lg-3 col-sm-12">
                             </div>
-                            <div class="col-lg-3 col-sm-6">
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
+                            <div class="col-lg-3 col-sm-12">
                                 @if(session('quyen12')==1)
                                 <a href="{{route('getThemNhanSu')}}">
                                     <button type="button" class="btn mb-1 btn-outline-success" style="float: right">Thêm mới</button>
