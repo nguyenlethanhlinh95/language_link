@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class StudentService
 {
+    /**
+     * Get Total record student
+     *
+     * @return integer | null
+     */
     public function getTotalStudent()
     {
         return DB::table('st_student')->count();
@@ -92,5 +97,27 @@ class StudentService
         $pagination = config('constant.pagination');
         $students = $this->searchStudent($searchByName, $pagination, $params);
         return $students;
+    }
+
+    /**
+     * Get Student By Id
+     *
+     * @param $id
+     *
+     * @return $student
+     */
+    public function findStudentById($id)
+    {
+        $student = Student::query()
+            ->findOrFail($id);
+        return $student;
+    }
+
+    public function getAllMarketingByStudentId($id)
+    {
+        $marketings = DB::table('st_student_marketing')
+            ->where('student_id', $id)
+            ->get();
+        return $marketings;
     }
 }

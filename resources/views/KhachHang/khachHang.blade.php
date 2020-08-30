@@ -110,9 +110,11 @@
                 @endif
                 @if(session('quyen24')==1)
                 <td>
-                    <a class="btn" onclick="xoa('{{$item->student_id }}');">
-                        <i style="color: red" class="fa fa-close"></i>
-                    </a>
+                    @if (!$isAdmin)
+                        <a class="btn" onclick="xoa('{{$item->student_id }}');">
+                            <i style="color: red" class="fa fa-close"></i>
+                        </a>
+                    @endif
                 </td>
                 @endif
             </tr>
@@ -184,6 +186,8 @@
             }
         });
     }
+
+    @if (!$isAdmin)
     function xoa(id) {
         swal({
                 title: "BẠN MUỐN XÓA ?",
@@ -219,6 +223,7 @@
             }
         )
     }
+    @endif
 </script>
 
 @endsection

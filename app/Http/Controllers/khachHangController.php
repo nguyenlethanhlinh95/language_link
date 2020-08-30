@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Marketing;
 use App\Model\Student;
 use App\Services\BranchService;
+use App\Services\MarketingService;
 use App\Services\StudentService;
 use Carbon\Carbon;
 use Facade\Ignition\QueryRecorder\Query;
@@ -22,15 +24,17 @@ class khachHangController extends Controller
      */
     protected $studentService;
     protected $branchService;
-
+    protected $marketingService;
     /**
-     * @param StudentService       $studentService       StudentService
-     * @param BranchService       $branchService       BranchService
+     * @param StudentService            $studentService         StudentService
+     * @param BranchService             $branchService          BranchService
+     * @param MarketingService          $marketingService       MarketingService
      */
-    public function __construct(StudentService $studentService, BranchService $branchService)
+    public function __construct(StudentService $studentService, BranchService $branchService, MarketingService $marketingService)
     {
         $this->studentService = $studentService;
         $this->branchService = $branchService;
+        $this->marketingService = $marketingService;
     }
 
     /**
@@ -54,7 +58,8 @@ class khachHangController extends Controller
                     'hocVien' => $hocVien,
                     'soTrang' => $soTrang,
                     'page' => 1,
-                    'branchName' => $this->branchService->getBranchNameFromUserLogin()
+                    'branchName' => $this->branchService->getBranchNameFromUserLogin(),
+                    'isAdmin'   => isAdmin()
                 ];
                 return view('KhachHang.khachHang', $data);
             } else
@@ -65,42 +70,62 @@ class khachHangController extends Controller
         }
     }
 
+    /**
+     * Show Form Register Student
+     *
+     * @return View
+     */
     public function getThemHocVien()
     {
-        $quyen = new quyenController();
-        $quyenThemKH = $quyen->getThemKhachHang();
-        if ($quyenThemKH == 1) {
-            $marketing = DB::table('st_marketing')
-                ->where('marketing_status', 1)
-                ->get();
-            return view('KhachHang.themKhachHang')
-                ->with('marketing', $marketing);
-        } else
-            return redirect()->back();
+        try {
+            $quyen = new quyenController();
+            $quyenThemKH = $quyen->getThemKhachHang();
+            $user = getUserLogin();
+            if ($quyenThemKH == 1) {
+                $marketing = $this->marketingService->getAllMarketingByStatus($status=1);
+                $data = [
+                    'marketing' => $marketing,
+                    'user'      => $user,
+                    'branch'    => $this->branchService->getBranchNameFromUserLogin()
+                ];
+                return view('KhachHang.themKhachHang', $data);
+            } else
+                return redirect()->back();
+        } catch (\Exception $exception)
+        {
+            abort(404);
+        }
     }
+
+    /**
+     * Show Form Edit Student
+     *
+     * @return View
+     */
     public function getCapNhatHocVien(Request $request)
     {
-        $quyen = new quyenController();
-        $quyenSuaKH = $quyen->getSuaKhachHang();
-        if ($quyenSuaKH == 1) {
-            $id = $request->get('id');
-            $hocVien = DB::table('st_student')
-                ->where('student_id', $id)
-                ->get()->first();
-
-            $khachHangMarketTing = DB::table('st_student_marketing')
-                ->where('student_id', $id)
-                ->get();
-            $marketing = DB::table('st_marketing')
-                ->get();
-
-
-            return view('KhachHang.capNhatKhachHang')
-                ->with('marketing', $marketing)
-                ->with('khachHangMarketTing', $khachHangMarketTing)
-                ->with('hocVien', $hocVien);
-        } else
-            return redirect()->back();
+        try {
+            $quyen = new quyenController();
+            $quyenSuaKH = $quyen->getSuaKhachHang();
+            if ($quyenSuaKH == 1) {
+                $id = $request->get('id');
+                $hocVien = $this->studentService->findStudentById($id);
+                $marketings = $this->studentService->getAllMarketingByStudentId($id);
+                $marketing = $this->marketingService->getAllMarketingByStatus($status=1);
+                $data = [
+                    'hocVien'               => $hocVien,
+                    'khachHangMarketTing'   => $marketings,
+                    'marketing'             => $marketing,
+                    'branch'                => $this->branchService->getBranchNameFromUserLogin()
+                ];
+                return view('KhachHang.capNhatKhachHang',$data);
+            } else
+                return redirect()->back();
+        } catch (\Exception $exception)
+        {
+            dd($exception->getMessage());
+//            abort(404);
+        }
     }
     function convert_vi_to_en($str)
     {
@@ -124,6 +149,7 @@ class khachHangController extends Controller
     public function postThemHocVien(Request $request)
     {
         if ($request->ajax()) {
+            $user = getUserLogin();
             $quyen = new quyenController();
             $quyenThemKH = $quyen->getThemKhachHang();
             if ($quyenThemKH == 1) {
@@ -185,7 +211,7 @@ class khachHangController extends Controller
                                 'student_dateTime' => $now,
                                 'employee_id' => session('user'),
                                 'student_nickName'=>$nickname,
-                                'branch_id'=>session('coSo'),
+                                'branch_id'=>$user['branch_id'],
                                 'student_link'=>$link,
                                 'student_surplus'=>0
                             ]);
@@ -333,7 +359,10 @@ class khachHangController extends Controller
             if ($quyenSuaKH == 1) {
 
                 $id = $request->get('id');
-
+                // check if supper admin not delete
+                if (isAdmin()) {
+                    return 0;
+                }
                 try {
                     DB::table('st_student')
                         ->where('student_id', $id)

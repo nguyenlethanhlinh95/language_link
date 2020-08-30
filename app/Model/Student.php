@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Student extends Model
 {
     //
-    protected $table = 'st_employee';
-    protected $primaryKey = 'employee_id';
+    protected $table = 'st_student';
+    protected $primaryKey = 'student_id';
 
     protected $fillable = [
         'student_id', 'student_firstName', 'student_lastName', 'student_lastNameHidden',
@@ -25,5 +25,13 @@ class Student extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class, 'branch_id', 'branch_id');
+    }
+
+    /**
+     * The marketings that belong to the students.
+     */
+    public function marketings()
+    {
+        return $this->belongsToMany(Marketing::class);
     }
 }
