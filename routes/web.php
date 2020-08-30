@@ -51,7 +51,9 @@ Route::post('them-du-lieu-hoc-vien', 'khachHangController@postThemHocVien')->nam
 Route::get('cap-nhat-hoc-vien', 'khachHangController@getCapNhatHocVien')->name('getCapNhatHocVien');
 Route::post('cap-nhat-du-lieu-hoc-vien', 'khachHangController@postCapNhatHocVien')->name('postCapNhatHocVien');
 Route::get('xoa-hoc-vien', 'khachHangController@getXoaHocVien')->name('getXoaHocVien');
-Route::get('search-hoc-vien', 'khachHangController@searchHocVien')->name('searchHocVien');
+//Route::get('search-hoc-vien', 'khachHangController@searchHocVien')->name('searchHocVien');
+Route::get('tim-kiem-hoc-vien', 'khachHangController@searchHocVien')->name('searchHocVien');
+//Route::get('ket-qua-tim-kiem-hoc-vien', 'khachHangController@searchHocVien')->name('searchHocVien');
 Route::get('thong-tin-hoc-vien', 'khachHangController@getChiTietHocVien')->name('getChiTietHocVien');
 Route::get('ghi-danh-hoc-vien', 'khachHangController@getGhiDanhHocVien')->name('getGhiDanhHocVien');
 Route::get('search-hoc-vien-ghi-danh', 'khachHangController@searchHocVienGhiDanh')->name('searchHocVienGhiDanh');

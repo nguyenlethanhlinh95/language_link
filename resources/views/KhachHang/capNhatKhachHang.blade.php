@@ -26,7 +26,7 @@ HỌC VIÊN
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Cập nhật học viên</h4>
+                        <h4 class="card-title">Cập nhật học viên @if (! isAdmin()) | {{ $branch }} @else {{ trans('student.no_support_admin') }} @endif</h4>
                       
                     <form id="myform1" autocomplete="off" action="" enctype="multipart/form-data" method="post">
                     {{ csrf_field() }}
@@ -126,8 +126,9 @@ HỌC VIÊN
                                 @endforeach
 
                                 <div class="col-lg-12 " style="text-align: center">
+                                @if (!isAdmin())
                                 <button type="submit" class="btn mb-1 btn-outline-success" >Cập nhật</button>
-                            
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -139,6 +140,7 @@ HỌC VIÊN
 </div>
 
 <script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
+@if (!isAdmin())
 <script>
       $('#myform1').submit(function() {
         $.ajax({
@@ -151,14 +153,14 @@ HỌC VIÊN
             success: function(data) {
                 if (data == 1) {
                     ThemThanhCong("Câp nhật học viên", "Cập nhật thành công!!!");
-                   
+
 
                 } else if (data == 2) {
                     KiemTra("Cập nhật học viên", "Bạn không có quyền cập nhật!!!");
                 }
                 else if (data == 3) {
                     KiemTra("Cập nhật học viên", "Số đt HV và số đt PH ít nhất có một!!!");
-                }  
+                }
                 else {
                     PhatHienLoi('Cập nhật học viên', "Lỗi Kết Nối!!!");
                 }
@@ -169,4 +171,5 @@ HỌC VIÊN
         return false;
     });
 </script>
+@endif
 @endsection

@@ -18,7 +18,7 @@ HỌC VIÊN
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Thêm học viên</h4>
+                        <h4 class="card-title">Thêm học viên @if (! isAdmin()) | {{ $branch }} @else {{ trans('student.no_support_admin') }} @endif</h4>
                       
                     <form id="myform1" autocomplete="off" action="" enctype="multipart/form-data" method="post">
                     {{ csrf_field() }}
@@ -82,8 +82,6 @@ HỌC VIÊN
                             <div class="col-lg-12 " style="padding: 10px">
                                 <label>Bạn Biết LanguageLink qua(You now LL through) </label>
                             </div>
-                        
-                            
                                 @foreach($marketing as $item)
                                 <div class="col-lg-3 col-sm-6">
                                     <div class="form-check mb-3">
@@ -95,8 +93,9 @@ HỌC VIÊN
                                 @endforeach
 
                                 <div class="col-lg-12 " style="text-align: center">
+                                @if (!isAdmin())
                                 <button type="submit" class="btn mb-1 btn-outline-success" >Thêm mới</button>
-                            
+                                @endif
                             </div>
                         </div>
                     </form>
@@ -108,6 +107,7 @@ HỌC VIÊN
 </div>
 
 <script src="{{asset('js/jQuery-2.1.4.min.js')}}"></script>
+@if (!isAdmin())
 <script>
       $('#myform1').submit(function() {
         $.ajax({
@@ -140,4 +140,5 @@ HỌC VIÊN
         return false;
     });
 </script>
+@endif
 @endsection
