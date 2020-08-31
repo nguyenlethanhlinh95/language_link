@@ -43,10 +43,11 @@
                                     <h4>Login</h4>
                                 </a>
 
-                                <form class="mt-5 mb-5 login-input" id="myform1" 
-                                action="{{ route('postLogin')}}" 
+                                <form class="mt-5 mb-5 login-input" id="myform1"
+                                action="{{ route('postLogin')}}"
                                 enctype="multipart/form-data" method="post">
                                     {{ csrf_field() }}
+
                                     <div class="form-group">
                                         <input type="text" name="userName" class="form-control" placeholder="Username">
                                     </div>
@@ -102,10 +103,10 @@
 // });
 // return false;
 // });
-        window.onload = function(e){ 
-        
+        window.onload = function(e){
+
             e.preventDefault();
- 
+
             // Nếu trình duyệt không hỗ trợ thông báo
             if (!window.Notification)
             {
@@ -123,7 +124,7 @@
                     // Ngược lại cho phép
                     else
                     {
-                       
+
                     }
                 });
             }

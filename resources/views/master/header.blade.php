@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>LANGUAGE LINK</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/logo-min-skytech.jpg">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
     <!-- Custom Stylesheet -->
     <link href="{{asset('plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css')}}" rel="stylesheet">
     <!-- Page plugins css -->
@@ -103,7 +103,7 @@
     background-color: green     !important;
 } 
 [data-nav-headerbg="color_1"] .nav-header {
-    background-color: green     !important;
+    background-color: #ffffff     !important;
     }
 .header-right .icons > a {
     color: white!important;
@@ -147,8 +147,8 @@ th{
         <div class="nav-header">
             <div class="brand-logo" style="padding: auto">
                 <a href="trang-chu">
-                    <b class="logo-abbr"><img width="100%" src="images/logo-min-skytech.jpg" alt=""> </b>
-                    <span class="logo-compact">< width="100%"img src="images/logo-min-skytech.jpg" alt=""></span>
+                    <b class="logo-abbr"><img width="100%" src="images/favicon.png" alt=""> </b>
+                    <span class="logo-compact">< width="100%" img src="images/favicon.png" alt=""></span>
                     <span class="brand-title">
                         <img width="100%" src="images/logo-text-skytech.png" alt="">
                     </span>
