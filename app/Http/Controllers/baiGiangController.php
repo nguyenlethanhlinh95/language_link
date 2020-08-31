@@ -25,6 +25,7 @@ class baiGiangController extends Controller
             $baiGiang = DB::table('st_pacing_guide')
                 ->where('course_id', $id)
                 ->get();
+
             return view('ChuongTrinhHoc.baiGiang')
                 ->with('khoaHoc', $khoaHoc)
                 ->with('baiGiang', $baiGiang)
@@ -42,10 +43,10 @@ class baiGiangController extends Controller
             $khoaHoc = DB::table('st_course')
                 ->where('course_id', $id)
                 ->get()->first();
-          
+
             return view('ChuongTrinhHoc.themBaiGiang')
                 ->with('khoaHoc', $khoaHoc)
-                
+
                 ;
         } else return redirect()->back();
     }
@@ -60,22 +61,22 @@ class baiGiangController extends Controller
             $baiGiang = DB::table('st_pacing_guide')
             ->where('pacingGuide_id',$id)
             ->get()->first();
-           
-          
+
+
             return view('ChuongTrinhHoc.capNhatBaiGiang')
                 ->with('baiGiang', $baiGiang)
-                
+
                 ;
         } else return redirect()->back();
     }
     public function postThemBaiDay(Request $request)
     {
-       
+
             $quyen = new quyenController();
             $quyenThemBG = $quyen->getThemBaiGiang();
             $id = $request->get('id');
             if ($quyenThemBG == 1) {
-               
+
                 $ten = $request->get('ten');
                 try {
                     DB::table('st_pacing_guide')
@@ -91,17 +92,17 @@ class baiGiangController extends Controller
             } else {
                 return redirect()->route('getBaiGiang',['id'=>$id,'sms'=>2]);
             }
-        
+
     }
     public function postChinhSuaBaiDay(Request $request)
     {
-     
+
             $quyen = new quyenController();
             $quyenSuaBG = $quyen->getSuaBaiGiang();
             $id2 = $request->get('id2');
             $id = $request->get('id');
             if ($quyenSuaBG == 1) {
-              
+
                 $ten = $request->get('ten');
                 try {
                     DB::table('st_pacing_guide')
@@ -117,7 +118,7 @@ class baiGiangController extends Controller
                 } else {
                     return redirect()->route('getBaiGiang',['id'=>$id,'sms'=>2]);
                 }
-        
+
     }
     public function getXoaBaiGiang(Request $request)
     {
