@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>LANGUAGE LINK</title>
+    <title>LANGUAGE LINK -DA NANG -TAM KY</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
     <!-- Custom Stylesheet -->
@@ -82,11 +82,11 @@
 }
 .itemLi{
     color: white !important;
-    background-color: black !important; 
+    background-color: black !important;
 }
 [data-sibebarbg="color_1"] .nk-sidebar .metismenu > li ul a {
     color: white!important;
-    background-color: black !important; 
+    background-color: black !important;
 }
 
 
@@ -101,7 +101,7 @@
 
 [data-headerbg="color_1"] .header {
     background-color: green     !important;
-} 
+}
 [data-nav-headerbg="color_1"] .nav-header {
     background-color: #ffffff     !important;
     }
@@ -187,7 +187,7 @@ th{
                 </script>
                 <input hidden id="valueIcon" value="0">
                 <div class="header-left">
-                    
+
                 </div>
                 <div class="header-right">
                     <ul class="clearfix">
@@ -197,8 +197,8 @@ th{
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">3 New Messages</span>  
-                                    
+                                    <span class="">3 New Messages</span>
+
                                 </div>
                                 <div class="dropdown-content-body">
                                     <ul>
@@ -243,7 +243,7 @@ th{
                                             </a>
                                         </li>
                                     </ul>
-                                    
+
                                 </div>
                             </div>
                         </li>
@@ -253,8 +253,8 @@ th{
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">2 New Notifications</span>  
-                                    
+                                    <span class="">2 New Notifications</span>
+
                                 </div>
                                 <div class="dropdown-content-body">
                                     <ul>
@@ -263,7 +263,7 @@ th{
                                                 <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
                                                     <h6 class="notification-heading">Events near you</h6>
-                                                    <span class="notification-text">Within next 5 days</span> 
+                                                    <span class="notification-text">Within next 5 days</span>
                                                 </div>
                                             </a>
                                         </li>
@@ -272,7 +272,7 @@ th{
                                                 <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
                                                     <h6 class="notification-heading">Event Started</h6>
-                                                    <span class="notification-text">One hour ago</span> 
+                                                    <span class="notification-text">One hour ago</span>
                                                 </div>
                                             </a>
                                         </li>
@@ -290,38 +290,38 @@ th{
                                                 <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
                                                     <h6 class="notification-heading">Events to Join</h6>
-                                                    <span class="notification-text">After two days</span> 
+                                                    <span class="notification-text">After two days</span>
                                                 </div>
                                             </a>
                                         </li>
                                     </ul>
-                                    
+
                                 </div>
                             </div>
                         </li> -->
                         <li class="icons dropdown d-none d-md-flex">
                             <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
-                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=1"><span style="color: aqua">Công Việc Mới: {{ session('ViecCho') }}</span></a>  
+                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=1"><span style="color: aqua">Công Việc Mới: {{ session('ViecCho') }}</span></a>
                             </a>
-                
+
                         </li>
                         <li class="icons dropdown d-none d-md-flex">
                             <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
-                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=2"> <span style="color:  orange">Công Việc Đang Thực Hiện: {{ session('ViecDangLam') }}</span>  </a>  
+                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=2"> <span style="color:  orange">Công Việc Đang Thực Hiện: {{ session('ViecDangLam') }}</span>  </a>
                             </a>
-                
+
                         </li>
                         <li class="icons dropdown d-none d-md-flex">
                             <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
-                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=3">  <span style="color: red">Công Việc Trể: {{ session('viecTre') }}</span>  </a>  
+                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=3">  <span style="color: red">Công Việc Trể: {{ session('viecTre') }}</span>  </a>
                             </a>
-                
+
                         </li>
                         <li class="icons dropdown d-none d-md-flex">
                             <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
-                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=4"><span>Công Việc Đã Hoàn Thành: {{ session('viecHT') }}</span>  </a>  
+                                <a  href="{{ route('getNhiemVuCaNhan') }}?status=4"><span>Công Việc Đã Hoàn Thành: {{ session('viecHT') }}</span>  </a>
                             </a>
-                
+
                         </li>
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative" data-toggle="dropdown">
@@ -331,7 +331,7 @@ th{
                                 @else
                                     <img src="https://drive.google.com/uc?id={{session('userLink')}}" height="40" width="40" alt="">
                                 @endif
-                                
+
                             </div>
                             <div class="drop-down dropdown-profile   dropdown-menu">
                                 <div class="dropdown-content-body">
@@ -417,7 +417,7 @@ th{
                             @if(session('quyen411')==1)
                             <li><a class="itemLi" href="{{route('getNhanXet')}}">Nhận xét</a></li>
                                 @endif
-                            
+
                         </ul>
                     </li>
                     @endif
@@ -427,13 +427,13 @@ th{
                             <i class="fa  fa-book "></i><span class="nav-text">NHÂN SỰ</span>
                         </a>
                         {{-- <ul aria-expanded="false">
-                          
+
                             <li><a class="itemLi">Nhân sự</a></li>
-                           
+
                         </ul> --}}
                     </li>
                     @endif
-                    
+
                     @if(session('quyen4011')==1 ||session('quyen4051')==1 )
                     <li class="mega-menu mega-menu-sm">
                         <a class="itemL" class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -443,7 +443,7 @@ th{
                             {{-- @if(session('quyen4011')==1)
                             <li><a class="itemLi" href="{{route('getXepLichLopHoc')}}">Lớp học</a></li>
                             @endif
-                            
+
                             @if(session('quyen4021')==1)
                             <li><a class="itemLi" href="{{route('getNhanVienLich')}}">Nhân viên</a></li>
                             @endif --}}
@@ -463,7 +463,7 @@ th{
                     @endif
 
                     @if(session('quyen4211')==1 )
-                 
+
                     <li class="mega-menu mega-menu-sm">
                         <a class="itemL" class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa  fa-calendar "></i><span class="nav-text">LỊCH LÀM VIỆC</span>
@@ -476,14 +476,14 @@ th{
                             <li><a class="itemLi" href="{{route('getLichTongQuat')}}">Lịch tháng </a></li>
                             @endif
 
-                            
+
                         </ul>
                     </li>
                     @endif
 
 
                     @if(session('quyen151')==1 || session('quyen161')==1
-                    ||session('quyen201')==1 || session('quyen171')==1 
+                    ||session('quyen201')==1 || session('quyen171')==1
                     ||session('quyen191')==1 || session('quyen181')==1 )
                     <li class="mega-menu mega-menu-sm">
                         <a class="itemL" class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -499,7 +499,7 @@ th{
                                         @foreach(session('loaiVatPham') as $item)
                                         <li><a class="itemLi" href="{{route('getCoSoVatChat')}}?id={{$item['id']}}">{{$item['ten']}}</a></li>
                                         @endforeach
-                                      
+
                                     </ul>
                                 </li>
                             @endif
@@ -509,7 +509,7 @@ th{
                                     @foreach(session('loaiVatPham') as $item)
                                 <li><a href="{{route('getVatPhamChiNhanh')}}?id={{$item['id']}}">{{$item['ten']}}</a></li>
                                     @endforeach
-                                  
+
                                 </ul>
                             </li>
                             @endif
@@ -519,7 +519,7 @@ th{
                                     @foreach(session('loaiVatPham') as $item)
                                 <li><a href="{{route('getTonKho')}}?id={{$item['id']}}">{{$item['ten']}}</a></li>
                                     @endforeach
-                                  
+
                                 </ul>
                             </li>
                             @endif
@@ -530,13 +530,13 @@ th{
                             @if(session('quyen181')==1)
                             <li><a class="itemLi" href="{{route('getXuatKho')}}">Xuất kho</a></li>
                             @endif
-                           
-                            
+
+
                         </ul>
                     </li>
                     @endif
                     @if(session('quyen211')==1 || session('quyen221')==1
-                    ||session('quyen231')==1 || session('quyen241')==1 
+                    ||session('quyen231')==1 || session('quyen241')==1
                     ||session('quyen251')==1 )
                     <li class="mega-menu mega-menu-sm">
                         <a class="itemL" class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -558,8 +558,8 @@ th{
                             @if(session('quyen251')==1)
                             <li><a class="itemLi" href="{{route('getXuatVatPham')}}">Xuất kho </a></li>
                             @endif
-                            
-                            
+
+
                         </ul>
                     </li>
                     @endif
@@ -569,14 +569,14 @@ th{
                             <i class="fa  fa-book "></i><span class="nav-text">MARKETING</span>
                         </a>
                         {{-- <ul aria-expanded="false">
-                          
+
                             <li><a class="itemLi">Nhân sự</a></li>
-                           
+
                         </ul> --}}
                     </li>
                     @endif
                     @if(session('quyen7001')==1 || session('quyen7011')==1
-                    ||session('quyen7021')==1 || session('quyen7031')==1 
+                    ||session('quyen7021')==1 || session('quyen7031')==1
                     ||session('quyen7041')==1 ||session('quyen7051')==1)
                     <li class="mega-menu mega-menu-sm">
                         <a class="itemL" class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -601,7 +601,7 @@ th{
                             @if(session('quyen7051')==1)
                             <li><a class="itemLi" href="{{route('getThongKeHocVien')}}">Học Viên</a></li>
                             @endif
-                            
+
                         </ul>
                     </li>
                     @endif
@@ -611,13 +611,13 @@ th{
                             <i class="fa   fa-bullhorn "></i><span class="nav-text">THÔNG BÁO</span>
                         </a>
                         <ul aria-expanded="false">
-                          
+
                             <li><a class="itemLi" href="{{route('getThongBao')}}">DS thông báo</a></li>
-                           
-                            <li><a class="itemLi" href="{{route('getThongBaoCaNhan')}}">Thông báo</a></li>  
+
+                            <li><a class="itemLi" href="{{route('getThongBaoCaNhan')}}">Thông báo</a></li>
                         </ul>
                     </li>
-                    @else 
+                    @else
                     <li class="mega-menu mega-menu-sm">
                         <a class="itemL" href="{{route('getThongBaoCaNhan')}}" class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="fa   fa-bullhorn "></i><span class="nav-text">THÔNG BÁO</span>
@@ -625,7 +625,7 @@ th{
                     </li>
                     @endif
                     @if(session('quyen301')==1 || session('quyen311')==1
-                    ||session('quyen321')==1 || session('quyen331')==1 
+                    ||session('quyen321')==1 || session('quyen331')==1
                     ||session('quyen351')==1 ||session('quyen361')==1
                     ||session('quyen901')==1||session('quyen9021')==1)
                     <li class="mega-menu mega-menu-sm">
@@ -636,7 +636,7 @@ th{
                             @if(session('quyen301')==1)
                             <li><a class="itemLi" href="{{route('getMarketing')}}">Marketing</a></li>
                             @endif
-                       
+
                             @if(session('quyen311')==1)
                             <li><a class="itemLi" href="{{route('getChuongTrinhKM')}}">Chương Trình KM</a></li>
                             @endif
@@ -646,7 +646,7 @@ th{
                             @if(session('quyen331')==1)
                             <li><a class="itemLi" href="{{route('getChiNhanh')}}">Chi nhánh</a></li>
                             @endif
-                           
+
                             @if(session('quyen351')==1)
                             <li><a class="itemLi" href="{{route('getChucVu')}}">Chức vụ</a></li>
                             @endif
@@ -662,14 +662,14 @@ th{
                             @if(session('quyen511')==1)
                             <li><a class="itemLi" href="{{route('getNhiemVu')}}">Công việc</a></li>
                             @endif
-                            
-                            
+
+
                             @if(session('quyen361')==1)
                             <li><a class="itemLi" href="{{route('getTeam')}}">Teamwork</a></li>
                             @endif
-                            
+
                             @if(session('quyen901')==1||session('quyen9021')==1)
-                            
+
                             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Quyền Hạn</a>
                                 <ul aria-expanded="false">
                                     @if(session('quyen901')==1)
@@ -684,7 +684,7 @@ th{
                         </ul>
                     </li>
                     @endif
-                    
+
                     <!-- <li class="mega-menu mega-menu-sm">
                         <a class="itemL" class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Layouts</span>
@@ -698,8 +698,8 @@ th{
                             <li><a class="itemLi" href="./layout-horizontal.html">Horizontal</a></li>
                             <li><a class="itemLi" href="./layout-boxed.html">Boxed</a></li>
                             <li><a class="itemLi" href="./layout-wide.html">Wide</a></li>
-                            
-                            
+
+
                             <li><a href="./layout-fixed-header.html">Fixed Header</a></li>
                             <li><a href="layout-fixed-sidebar.html">Fixed Sidebar</a></li>
                         </ul>
