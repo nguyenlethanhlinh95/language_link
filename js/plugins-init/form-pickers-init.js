@@ -48,7 +48,9 @@
         mode: 'gradient'
     });
     // Date Picker
-    jQuery('.mydatepicker, #datepicker').datepicker();
+     jQuery('.mydatepicker, #datepicker').datepicker({
+        format: 'dd/mm/yyyy'        
+    });
     jQuery('#datepicker-autoclose').datepicker({
         autoclose: true,
         todayHighlight: true
