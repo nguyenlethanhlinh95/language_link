@@ -57,6 +57,7 @@ Route::get('tim-kiem-hoc-vien', 'khachHangController@searchHocVien')->name('sear
 Route::get('thong-tin-hoc-vien', 'khachHangController@getChiTietHocVien')->name('getChiTietHocVien');
 Route::get('ghi-danh-hoc-vien', 'khachHangController@getGhiDanhHocVien')->name('getGhiDanhHocVien');
 Route::get('search-hoc-vien-ghi-danh', 'khachHangController@searchHocVienGhiDanh')->name('searchHocVienGhiDanh');
+Route::get('result-search-hoc-vien-ghi-danh', 'khachHangController@resultSearchStudentRegisterd')->name('result-search-student-registerd');
 Route::get('thong-tin-hoc-vien-ghi-danh', 'khachHangController@getThongTinGhiDanh')->name('getThongTinGhiDanh');
 //)};
 

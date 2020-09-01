@@ -113,11 +113,52 @@ class StudentService
         return $student;
     }
 
+    /**
+     * Get All marketing By Student Id
+     *
+     * @param $id
+     *
+     * @return $student
+     */
     public function getAllMarketingByStudentId($id)
     {
         $marketings = DB::table('st_student_marketing')
             ->where('student_id', $id)
             ->get();
         return $marketings;
+    }
+
+    /**
+     * Get All marketing By Student Id
+     *
+     * @param $id
+     *
+     * @return $student
+     */
+    public function searchAllStudentRegistered($params)
+    {
+        $keyword = $params['q'];
+        $students = DB::table('st_student')
+            ->where('student_firstName', 'like', '%' . $keyword . '%')
+            ->orwhere('student_lastName', 'like', '%' . $keyword . '%')
+            ->orwhere('student_lastNameHidden', 'like', '%' . $keyword . '%')
+            ->orwhere('student_phone', 'like', '%' . $keyword . '%')
+            ->orwhere('student_parentPhone', 'like', '%' . $keyword . '%')
+            ->orderByDesc('student_dateTime')
+            ->paginate(config('constant.pagination'))
+            ->appends(request()->all());
+        return $students;
+    }
+
+    public function isNickNameExist($nickName)
+    {
+        $Student = DB::table('st_student')
+            ->select('student_id')
+            ->where('student_nickName', $nickName)
+            ->first();
+        if (!is_null($Student)) {
+            return true;
+        }
+        return false;
     }
 }
