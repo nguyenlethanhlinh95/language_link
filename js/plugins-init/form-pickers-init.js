@@ -49,7 +49,7 @@
     });
     // Date Picker
      jQuery('.mydatepicker, #datepicker').datepicker({
-        format: 'dd/mm/yyyy'        
+        format: 'dd/mm/yyyy'
     });
     jQuery('#datepicker-autoclose').datepicker({
         autoclose: true,
