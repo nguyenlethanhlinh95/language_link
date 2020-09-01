@@ -153,6 +153,7 @@ class khachHangController extends Controller
             $quyen = new quyenController();
             $quyenThemKH = $quyen->getThemKhachHang();
             if ($quyenThemKH == 1) {
+                // validate
                 $sdtPH = "";
                 $tenPH = "";
                 $sdt = "";
@@ -168,8 +169,21 @@ class khachHangController extends Controller
                 $nickname = $request->get('nickname');
                 $link = $request->get('link');
                 $trangThai = $request->get('trangThai');
+
                 if($nickname=="")
-                    $nickname="";
+                {
+                    $arr[] = [
+                        'id' => 0,
+                        'loai' => config('constant.nickname.NULL')
+                    ];
+                    return response($arr);
+                } else if ($isNickNameExist = $this->studentService->isNickNameExist($nickname)){
+                    $arr[] = [
+                        'id' => 0,
+                        'loai' => config('constant.nickname.EXIST')
+                    ];
+                    return response($arr);
+                }
                 if($email=="")
                     $email="";
 
@@ -213,7 +227,8 @@ class khachHangController extends Controller
                                 'student_nickName'=>$nickname,
                                 'branch_id'=>$user['branch_id'],
                                 'student_link'=>$link,
-                                'student_surplus'=>0
+                                'student_surplus'=>0,
+                                'password_student'=>123456
                             ]);
                         $marketing = DB::table('st_marketing')
                             ->get();
@@ -436,6 +451,8 @@ class khachHangController extends Controller
             }
         }
     }
+
+    // ajax search student registered
     public function searchHocVienGhiDanh(Request $request)
     {
         if ($request->ajax()) {
@@ -609,16 +626,50 @@ class khachHangController extends Controller
         } else
             return redirect()->back();
     }
+
+    /**
+     * Show form search Student Register, and form register Student
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\View\View
+     */
     public function getGhiDanhHocVien(Request $request)
     {
-        $quyen = new quyenController();
-        $quyenThemKH = $quyen->getThemKhachHang();
-        if ($quyenThemKH == 1) {
-            $marketing = DB::table('st_marketing')
-                ->get();
-            return view('KhachHang.ghiDanh')
-                ->with('marketing', $marketing);
-        } else
-            return redirect()->back();
+        try {
+            $quyen = new quyenController();
+            $quyenThemKH = $quyen->getThemKhachHang();
+            if ($quyenThemKH == 1) {
+                $marketing = $this->marketingService->getAllMarketingByStatus($status = 1);
+                // process for search mkethod get
+                $data = [
+                    'marketing' => $marketing,
+                ];
+                return view('KhachHang.ghiDanh', $data);
+            } else
+                return redirect()->back();
+        } catch (\Exception $exception) {
+            dd($exception->getMessage());
+            //abort(404);
+        }
+    }
+
+    public function resultSearchStudentRegisterd(Request $request)
+    {
+        try {
+            $params = $request->all();
+            $students = $this->studentService->searchAllStudentRegistered($params);
+            $marketing = $this->marketingService->getAllMarketingByStatus($status = 1);
+            $data = [
+                'marketing' => $marketing,
+                'students' => $students,
+                'keyword' => $params['q'],
+            ];
+            return view('Khachhang.result_search_student_registered', $data);
+        } catch (\Exception $exception)
+        {
+            dd($exception->getMessage());
+            //abort(404);
+        }
     }
 }
