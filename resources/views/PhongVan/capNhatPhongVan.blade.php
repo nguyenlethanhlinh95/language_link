@@ -2,18 +2,16 @@
 @section('title')
 PT
 @endsection
+@push('styles')
+    <style>
+        label{
+            margin-bottom: 0;
+            margin-top: 15px;
+        }
+    </style>
+@endpush
 @section('contain')
 <div class="content-body">
-
-    <!-- <div class="row page-titles mx-0">
-                <div class="col p-md-0">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-                    </ol>
-                </div>
-            </div> -->
-    <!-- row -->
     <div class="row page-titles mx-0" style="padding-bottom: 0px!important">
         <div class="col p-md-0">
             <ol class="breadcrumb" style="float:left!important">
@@ -153,7 +151,8 @@ PT
 
                 $.ajax({
             type: 'get',
-            url: '{{ route("postThemPhongVan")}}',
+            token: "{!! @csrf_token() !!}",
+            url: '{{ route("postCapNhatPhongVan")}}',
             data:{
                 'giaoVien':$giaoVien,
                 'date':$thoiGian,
@@ -165,7 +164,9 @@ PT
             success: function(data) {
                 if (data == 1) {
                     ThemThanhCong("Cập nhật PT", "Cập nhật thành công!!!");
-                
+                    setTimeout(function(){
+                        window.location = "{!! route('getPhongVan') !!}";
+                    }, 2000);
                 } else if (data == 2) {
                     KiemTra("Cập nhật PT", "Bạn không có quyền Cập nhật!!!");
                 }  else {
