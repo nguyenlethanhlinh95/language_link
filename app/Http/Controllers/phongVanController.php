@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Employee;
+use App\Model\PlacementTest;
+use App\Services\PlacementTestStudentService;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -10,37 +13,34 @@ use Illuminate\Support\Facades\Redis;
 
 class phongVanController extends Controller
 {
+    /**
+     * @var $placementTestStudentService
+     */
+    protected $placementTestStudentService;
+
+    /**
+     * Class Constructor
+     *
+     * @param PlacementTestStudentService       $placementTestStudentService       PlacementTestStudentService
+     */
+    public function __construct(PlacementTestStudentService $placementTestStudentService)
+    {
+        $this->placementTestStudentService = $placementTestStudentService;
+    }
+
     public function getPhongVan()
     {
         $quyen = new quyenController();
         $quyenXemPV = $quyen->getXemPhongVan();
         if ($quyenXemPV == 1) {
+            $pagination = config('constant.pagination');
             $lay = $quyen->layDuLieu();
             $phongVan = DB::table('view_phong_van')
             ->orderByDesc('placementTest_dateTime')
-           
-            ->take($lay)
-            ->skip(0)
-            ->get();
-          
-          
-            $phongVanTong = DB::table('view_phong_van')
-            ->orderByDesc('placementTest_dateTime')
-           
-                ->select('placementTest_id')
-                ->get();
-            
-            $soHocVien = count($phongVanTong);
-            $soTrang = (int) $soHocVien / $lay;
-            if ($soHocVien % $lay > 0)
-                $soTrang++;
-
+            ->paginate($pagination);
 
             return view('PhongVan.phongVan')
-                ->with('phongVan', $phongVan)
-                ->with('soTrang', $soTrang)
-                ->with('page', 1)
-                ;
+                ->with('phongVan', $phongVan);
         } else
         return redirect()->back();
     }
@@ -266,9 +266,13 @@ class phongVanController extends Controller
                 $id = $request->get('id');
                 try
                 {
+                    $isStudentFillInfomation = $this->placementTestStudentService->isPlacementTestStudentFillAllInfomation($id);
+                    if ($isStudentFillInfomation == true) {
+                        return response(config('constant.placementTest.FILL.TRUE'));
+                    }
                     DB::table('st_placement_test')
                     ->where('placementTest_id',$id)
-                    ->de();
+                    ->delete();
                     return response(1);
                 }
                 catch(QueryException $ex)
@@ -286,7 +290,6 @@ class phongVanController extends Controller
         $quyenKetQuaPV = $quyen->geCapNhatKetQuaPhongVan();
         if ($quyenKetQuaPV == 1) {
             $id = $request->get('id');
-           
             $phongVan = DB::table('st_placement_test')
             ->join('st_student','st_student.student_id','=','st_placement_test.student_id')
             ->where('placementTest_id',$id)
@@ -301,8 +304,6 @@ class phongVanController extends Controller
             ->get();
             $khoaHocDau = $khoaHoc->first();
             if(isset($khoaHocDau))
-
-         
             return view('PhongVan.ketQuaPhongVan')
                 ->with('phongVan', $phongVan)
                 ->with('khoaHoc', $khoaHoc)
@@ -416,6 +417,29 @@ class phongVanController extends Controller
                 $i++;
             }
             return response($out);
+        }
+    }
+
+    /**
+     * Result Search PhongVan
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function resultSearchPlanPhongVan(Request $request)
+    {
+        try {
+            $params = $request->all();
+            $placementTests = $this->placementTestStudentService->searchAllPlacementTestStudentWithPagination($params);
+            $data = [
+                'placementTests' => $placementTests,
+                'search' => $params['search']
+            ];
+            return view('PhongVan.result-search-placement', $data);
+        } catch (\Exception $exception)
+        {
+            abort(404);
         }
     }
 

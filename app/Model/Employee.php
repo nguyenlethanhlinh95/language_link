@@ -29,4 +29,14 @@ class Employee extends Model
     protected $hidden = [
         'employee_password',
     ];
+
+    /**
+     * The placementTest that belong to the student.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function placementTests()
+    {
+        return $this->belongsToMany(PlacementTest::class, 'employee_id', 'employee_id');
+    }
 }

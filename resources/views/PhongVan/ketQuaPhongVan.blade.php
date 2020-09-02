@@ -2,18 +2,16 @@
 @section('title')
 PHỎNG VẤN
 @endsection
+@push('styles')
+    <style>
+        label {
+            margin-bottom: 0;
+            margin-top: 15px;
+        }
+    </style>
+@endpush
 @section('contain')
 <div class="content-body">
-
-    <!-- <div class="row page-titles mx-0">
-                <div class="col p-md-0">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-                    </ol>
-                </div>
-            </div> -->
-    <!-- row -->
     <div class="row page-titles mx-0" style="padding-bottom: 0px!important">
         <div class="col p-md-0">
             <ol class="breadcrumb" style="float:left!important">
@@ -26,8 +24,6 @@ PHỎNG VẤN
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-
-                      
                             <h4 class="card-title">Kết quả phỏng vấn</h4>
                                 <form id="myform1" autocomplete="off" action="" enctype="multipart/form-data" method="post">
                                     {{ csrf_field() }}
@@ -61,9 +57,7 @@ PHỎNG VẤN
                                         </div>
                                         <div class="col-lg-6 col-sm-6">
                                             <label>Speaking</label>
-                                           
                                             <input maxlength="100" class="form-control" name="speaking"  value="{{$phongVan->placementTest_speaking}}">
-                                        
                                         </div>
                                         <div class="col-lg-6 col-sm-6">
                                             <label>Khóa học chính <span style="color: red">*</span></label>
@@ -106,14 +100,12 @@ PHỎNG VẤN
                                             <textarea class="form-control" name="detail">{{$phongVan->placementTest_reason}}</textarea>
                                         </div>
                                         @if(session('quyen2001')==1)
-                                        <div class="col-lg-12 " style="text-align: center;padding: 10px">
-                
+                                        <div class="col-lg-12 mt-4" style="text-align: center;padding: 10px">
                                             <button type="submit" class="btn mb-1 btn-outline-success">Cập nhật</button>
                                         </div>
                                         @endif
                                     </div>
                                 </form>
-
                     </div>
                 </div>
             </div>
@@ -134,14 +126,16 @@ PHỎNG VẤN
             success: function(data) {
                 if (data == 1) {
                     ThemThanhCong("Cập nhật kết quả phỏng vấn", "Cập nhật thành công!!!");
-                
+                    setTimeout(function(){
+                        window.location = "{{route('getPhongVan')}}";
+                    }, 2000);
+
                 } else if (data == 2) {
                     KiemTra("Cập nhật kết quả phỏng vấn", "Bạn không có quyền cập nhật!!!");
-                }  else {
+                }
+                else {
                     PhatHienLoi('Cập nhật kết quả phỏng vấn', "Lỗi Kết Nối!!!");
                 }
-
-                //   alert(data);
             }
         });
         return false;

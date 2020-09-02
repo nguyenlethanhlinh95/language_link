@@ -2,26 +2,22 @@
 @section('title')
 PT
 @endsection
+@push('styles')
+    <style>
+        label{
+            margin-bottom: 0;
+            margin-top: 15px;
+        }
+    </style>
+@endpush
 @section('contain')
 <div class="content-body">
-
-    <!-- <div class="row page-titles mx-0">
-                <div class="col p-md-0">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
-                    </ol>
-                </div>
-            </div> -->
-    <!-- row -->
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-
                         <div class="row">
-                           
                             <div class="col-lg-6 col-sm-6">
                             <h4 class="card-title">Thêm PT</h4>
                                 <form id="myform1" autocomplete="off" action="" enctype="multipart/form-data" method="post">
@@ -153,7 +149,10 @@ PT
             success: function(data) {
                 if (data == 1) {
                     ThemThanhCong("Thêm PT", "Thêm thành công!!!");
-                
+                    setTimeout(function(){
+                        window.location = "{!! route('getPhongVan') !!}";
+                    }, 2200);
+
                 } else if (data == 2) {
                     KiemTra("Thêm PT", "Bạn không có quyền thêm!!!");
                 }  else {
@@ -207,6 +206,8 @@ PT
              if(data==0)
              {
                  KiemTra("Thêm PT","Giáo viên đã trùng lịch")
+             } else {
+
              }
             }
         });
