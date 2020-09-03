@@ -704,7 +704,17 @@ Route::post('postCapNhatNhanXetDiemSo', 'nhanXetController@postCapNhatNhanXetDie
 Route::get('getXoaNhanXetDiemSo', 'nhanXetController@getXoaNhanXetDiemSo')->name('getXoaNhanXetDiemSo');
 Route::get('searchNhanXetDiemSo', 'nhanXetController@searchNhanXetDiemSo')->name('searchNhanXetDiemSo');
 
+// Payment
+Route::group(['prefix' => 'payment', 'as' => 'payment.'], function() {
+    Route::get('/', 'PaymentController@index')->name('index');
+    Route::get('/create', 'PaymentController@create')->name('create');
+    Route::post('/store', 'PaymentController@store')->name('store');
+    Route::get('/edit/{id}', 'PaymentController@edit')->name('edit');
+    Route::post('/update/{id}', 'PaymentController@update')->name('update');
+    Route::get('/show/{id}', 'PaymentController@show')->name('show');
+    Route::post('/delete/{id}', 'PaymentController@delete')->name('delete');
 
+});
 
 
 

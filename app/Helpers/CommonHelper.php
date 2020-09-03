@@ -29,4 +29,12 @@ if(!function_exists('isAdmin'))
     }
 }
 
+if(!function_exists('formatCurrency'))
+{
+    function formatCurrency($price)
+    {
+        return number_format($price, 0, '', '.');
+    }
+}
+
 ?>

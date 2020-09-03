@@ -2640,4 +2640,16 @@ class quyenController extends Controller
             return 0;
     }
 
+    /**
+     * @param $vitual_Quyen
+     * @return bool
+     */
+    public function checkQuyen($vitual_Quyen)
+    {
+        if ($vitual_Quyen == "100") {
+            return true;
+        }
+        return false;
+    }
+
 }

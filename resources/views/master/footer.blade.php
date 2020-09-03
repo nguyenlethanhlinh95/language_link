@@ -14,42 +14,42 @@
     <!--**********************************
         Scripts
     ***********************************-->
-    <script src="plugins/common/common.min.js"></script>
-    <script src="js/custom.min.js"></script>
-    <script src="js/settings.js"></script>
-    <script src="js/gleek.js"></script>
-    <script src="js/styleSwitcher.js"></script>
+    <script src="{{ asset('plugins/common/common.min.js') }}"></script>
+    <script src="{{ asset('js/custom.min.js') }}"></script>
+    <script src="{{ asset('js/settings.js') }}"></script>
+    <script src="{{ asset('js/gleek.js') }}"></script>
+    <script src="{{ asset('js/styleSwitcher.js') }}"></script>
     
 
-    <script src="./plugins/moment/moment.js"></script>
+    <script src="{{ asset('plugins/moment/moment.js') }}"></script>
     
-    <script src="./plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <script src="{{ asset('plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
     <!-- Clock Plugin JavaScript -->
-    <script src="./plugins/clockpicker/dist/jquery-clockpicker.min.js"></script>
+    <script src="{{ asset('plugins/clockpicker/dist/jquery-clockpicker.min.js') }}"></script>
     <!-- Color Picker Plugin JavaScript -->
-    <script src="./plugins/jquery-asColorPicker-master/libs/jquery-asColor.js"></script>
-    <script src="./plugins/jquery-asColorPicker-master/libs/jquery-asGradient.js"></script>
-    <script src="./plugins/jquery-asColorPicker-master/dist/jquery-asColorPicker.min.js"></script>
+    <script src="{{ asset('plugins/jquery-asColorPicker-master/libs/jquery-asColor.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-asColorPicker-master/libs/jquery-asGradient.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-asColorPicker-master/dist/jquery-asColorPicker.min.js') }}"></script>
     <!-- Date Picker Plugin JavaScript -->
-    <script src="./plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="{{ asset('plugins/bootstrap-datepicker/bootstrap-datepicker.min.js') }}"></script>
     <!-- Date range Plugin JavaScript -->
-    <script src="./plugins/timepicker/bootstrap-timepicker.min.js"></script>
-    <script src="./plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script src="./plugins/toastr/js/toastr.min.js"></script>
-    <script src="./plugins/toastr/js/toastr.init.js"></script>
+    <script src="{{ asset('plugins/timepicker/bootstrap-timepicker.min.js') }}"></script>
+    <script src="{{ asset('plugins/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/js/toastr.min.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/js/toastr.init.js') }}"></script>
     <script src="{{asset('plugins/sweetalert/js/sweetalert.min.js')}}"></script>
     {{-- <script src="{{asset('plugins/sweetalert/js/sweetalert.init.js')}}"></script> --}}
 
 
-    <script src="./js/plugins-init/form-pickers-init.js"></script>
+    <script src="{{ asset('js/plugins-init/form-pickers-init.js') }}"></script>
 
-    <script src="./plugins/tables/js/jquery.dataTables.min.js"></script>
-    <script src="./plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
-    <script src="./plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+    <script src="{{ asset('plugins/tables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('plugins/tables/js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('plugins/tables/js/datatable-init/datatable-basic.min.js') }}"></script>
     @stack('scripts')
 
     <script>
-       
+
         function thongBaoTruocGio()
         {
           @php $thongBao = session()->get('thongBao');  $i=1;@endphp
@@ -62,7 +62,7 @@
                 var hours{{ $i }} = Math.floor((distance{{ $i }} % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes{{ $i }} = Math.floor((distance{{ $i }} % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds{{ $i }} = Math.floor((distance{{ $i }} % (1000 * 60)) / 1000);
-              
+
                 if (distance{{ $i }} < 0) {
                     clearInterval(x{{ $i }});
                     hienThiThongBao('{{ $item['ten'] }}','{{ $item['chiNhanh'] }}','{{ $item['id'] }}');
@@ -80,11 +80,11 @@
                'id':id
             },
             success: function(data) {
-               
+
             }
         });
             var notify;
-          
+
             if (Notification.permission == 'default')
             {
                // alert('Bạn phải cho phép thông báo trên trình duyệt mới có thể hiển thị nó.');
@@ -98,7 +98,7 @@
                         {
                             body: vaLue+'.', // Nội dung thông báo
                             icon: '{{ asset('images/logoLanguageLink.png') }}', // Hình ảnh
-                            tag: '{{ route('getThongBao') }}' // Đường dẫn 
+                            tag: '{{ route('getThongBao') }}' // Đường dẫn
                         }
                 );
                 // Thực hiện khi nhấp vào thông báo
@@ -107,7 +107,7 @@
                 }
         }
        }
-        window.onload = function(e){ 
+        window.onload = function(e){
 
            ketQuaBaiGiang();
           // thongBaoNhiemVu();
@@ -131,7 +131,7 @@
                     // Ngược lại cho phép
                     else
                     {
-                    
+
                     }
                 });
             }
