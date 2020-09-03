@@ -37,4 +37,16 @@ if(!function_exists('formatCurrency'))
     }
 }
 
+if(!function_exists('changeVND'))
+{
+    function changeVND($price)
+    {
+        $lenght = strlen($price);
+        $string = $lenght-5;
+        $substr = substr($price, 0, $string);
+        return str_replace('.', '', $substr);
+    }
+}
+
+
 ?>
