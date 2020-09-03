@@ -52,6 +52,7 @@ class PaymentController extends Controller
     {
         try {
             $params = $request->all();
+            $params['payment_amount'] = changeVND($params['payment_amount']);
             $status = $this->paymentService->store($params);
             if ($status) {
                 return redirect()->route('payment.index')
@@ -60,6 +61,7 @@ class PaymentController extends Controller
             return back()->with('err','Không thể thêm mới!');
         } catch (\Exception $exception)
         {
+            dd($exception->getMessage());
             abort(404);
         }
     }
