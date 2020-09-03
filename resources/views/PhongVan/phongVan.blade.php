@@ -2,6 +2,39 @@
 @section('title')
     Phỏng Vấn
 @endsection
+
+@push('styles')
+    <style>
+        .grid-pagination nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        .card-body nav {
+            display: flex;
+            flex-direction: row-reverse;
+            margin-right: 30px;
+        }
+        .input-group-text i {
+            font-size: 24px;
+        }
+        .input-group-prepend {
+            margin-left: 26px;
+        }
+        .input-group-prepend:hover {
+            cursor: pointer;
+        }
+        .submit {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .submit:focus {
+            outline: none;
+        }
+    </style>
+@endpush
+
 @section('contain')
 <div class="content-body">
 
@@ -23,13 +56,18 @@
     <h4 class="card-title">PT</h4>
     <br>
     <div class="row">
-        <div class="col-lg-3 col-sm-6">
-            <div class="input-group icons">
-                <div class="input-group-prepend">
-                    <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+        <div class="col-lg-6 col-sm-12">
+            <form method="get" action="{{ route('result-search-plan-phong-van') }}">
+                @csrf
+                <div class="input-group icons">
+                    <div class="input-group-prepend">
+                        <button class="submit" type="submit" title="Tìm kiếm">
+                            <span class="input-group-text h5 p-0 bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i
+                                        class="mdi mdi-magnify"></i></span>
+                        </button>                    </div>
+                    <input id="valueSearch" name="search" type="search" class="form-control" placeholder="Search tên học viên" aria-label="Tìm marketing">
                 </div>
-                <input id="valueSearch" onkeyup="search();" type="search" class="form-control" placeholder="Search tên học viên" aria-label="Tìm marketing">
-            </div>
+            </form>
         </div>
         <div class="col-lg-6 col-sm-6">
         </div>
@@ -98,44 +136,9 @@
             @endforeach
         </tbody>
     </table>
-    <div class="bootstrap-pagination">
-        <nav>
-            <ul class="pagination justify-content-end">
-                @if($page==1)
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-
-                </li>
-                @else <li class="page-item ">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-
-                </li>
-                @endif
-                @for($i=1;$i<=$soTrang;$i++) 
-                @if($i==$page) 
-                    <li id="page{{$i}}" class="page-item active">
-                        <a onclick="searchPage('{{$i}}')" class="page-link" >{{$i}}</a>
-                    </li>
-                    @else
-                    <li id="page{{$i}}" class="page-item">
-                        <a onclick="searchPage('{{$i}}')" class="page-link">{{$i}}</a>
-                    </li>
-                    @endif
-                    @endfor
-
-                    @if($page==1)
-                    <li class="page-item disabled">
-                        <a class="page-link">Next</a>
-                    </li>
-                    @else 
-                    <li class="page-item">
-                        <a class="page-link" >Next</a>
-                    </li>
-                    @endif
-            </ul>
-        </nav>
+    <div class="grid-pagination">
+        {{ $phongVan->links() }}
     </div>
-    <input hidden id="pageSelect" value="1">
 </div>
 </div>
             </div>
@@ -200,6 +203,7 @@
                 closeOnCancel: !1
             },
             function(e) {
+                var fillTrue = "{!! config('constant.placementTest.FILL.TRUE') !!}"
                 e ? swal(
                         $.ajax({
                             type: 'get',
@@ -213,7 +217,11 @@
                                     window.location = "{{route('getPhongVan')}}";
                                 } else if (data == 1) {
                                     KiemTra("Xóa marketing", "Bạn không có quyền xóa!!!!");
-                                } else
+                                }
+                                else if (data == fillTrue) {
+                                    KiemTra("Bạn không thể xóa PT này", "Học sinh đã được phỏng vấn!!!");
+                                }
+                                else
                                     PhatHienLoi("Xóa marketing", "Lỗi Kết kết nối!!!!");
                             }
                         })
