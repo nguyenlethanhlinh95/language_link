@@ -86,7 +86,7 @@
                                         <td>{{ $pay->payment_content }}</td>
                                         <td>{{ formatCurrency($pay->payment_amount) }} VNĐ</td>
                                         <td>{{ $pay->payment_note}}</td>
-                                        <td>{{ 213 }}</td>
+                                        <td>{{ $pay->employee['employee_name'] }}</td>
                                         @php $date = \Carbon\Carbon::parse($pay->payment_created_day)->format('Y-m-d h:m:s') @endphp
                                         <td width="110px">{{ $date }}</td>
                                         <td width="57px">
